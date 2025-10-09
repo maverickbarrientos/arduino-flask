@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    
+    <select name="current-pins" id="current-pins">
+        {% for pin in pins %}
+
+        <option value="{{pin}}">{{pin}}</option>
+
+        {% endfor %}
+    </select>
+    <button id="off-pin">OFF</button>
+
+<script>
+
+const offPin = document.querySelector("#off-pin")
+
+offPin.addEventListener('click', async () => {
+
+    const currentPin = document.querySelector("#current-pins");
+    const pinToOff = currentPin.value;
+    console.log(pinToOff);
+
+    try {
+
+        const response = await fetch("http://127.0.0.1:5000/turn_off", {
+
+            method: "POST",
+            headers: { "Content-Type" : "application/json" },
+            body: JSON.stringify({pin : pinToOff})
+
+        });
+
+        const data = await response.json();
+
+    } catch (Error) {
+        console.log(Error)
+    }
+
+});
+
+</script>
+</body>
+</html>

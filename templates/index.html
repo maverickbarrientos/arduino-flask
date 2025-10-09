@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    
+
+    <select name="choose-pin" id="choose-pin"></select>
+    <button id="submit-pin">Pin</button>
+
+    <a href="{{url_for('off')}}">remove pins</a>
+
+
+<script>
+
+const submitButton = document.querySelector("#submit-pin");
+const offPin = document.querySelector("#off-pin");
+
+submitButton.addEventListener('click', async () => {
+
+    const selectPin = document.querySelector("#choose-pin");
+    const chosenPin = selectPin.value;
+
+    try {
+        const response = await fetch("http://127.0.0.1:5000/led_action", {
+            method: "POST",
+            headers: { "Content-Type" : "application/json"},
+            body: JSON.stringify({pin : chosenPin})
+        })
+        const data = await response.json()
+
+    } catch (Error) {
+        console.log(Error)
+    }
+    
+
+});
+
+document.addEventListener('DOMContentLoaded', async () => {
+
+    const selectPin = document.querySelector("#choose-pin");
+
+    try {
+        
+        const response = await fetch("http://127.0.0.1:5000/fetch_pins");
+        const data = await response.json()
+        console.log(data);
+
+        data.available_pins.forEach((pin) => {
+            
+            const option = document.createElement("option");
+            option.value = pin;
+            option.textContent = pin;
+            selectPin.appendChild(option);
+
+        });
+
+    } catch (Error) {
+        console.log(Error);
+    }
+    
+
+});
+
+</script>
+</body>
+</html>
