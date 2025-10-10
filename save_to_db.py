@@ -22,6 +22,5 @@ def get_reserved_pins():
         result = cursor.fetchall()
         return result
     except Exception as e:
-        print(f"nyahahahError : {e}")
+        print(f"Error : {e}")
         return {"status" : False}
-

@@ -37,7 +37,7 @@ def led_action():
 def off():
     arduino.write(b'B')
     current_pins = arduino.readline().decode().strip()
-    data = json.loads(current_pins)    
+    data = json.loads(current_pins)
     return render_template('current-pins.html', pins = data["reserved_pins"])
 
 @app.route("/turn_off", methods=["POST"])
@@ -54,8 +54,6 @@ def update_pins():
         reserved_pins = [int(d['pin_number']) for d in reserved_pin_list]
         pins_list = json.dumps(reserved_pins)
         command = f"U{pins_list}\n".encode()
-        print("gasend ko")
-        print(command)
         arduino.write(command)
         return {"status" : "updated"}
     except Exception as e:
